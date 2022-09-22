@@ -1,7 +1,13 @@
-from django.db import models
+from django.urls import path
+from mywatchlist.views import show_html
+from mywatchlist.views import show_xml 
+from mywatchlist.views import show_json
 
-# Create your models here.
-class BarangWishlist(models.Model):
-    nama_barang = models.CharField(max_length=50)
-    harga_barang = models.IntegerField()
-    deskripsi = models.TextField()
+app_name = 'mywatchlist'
+
+urlpatterns = [
+    path('', show_html, name='show_html'),
+    path('html/', show_html, name='show_html'),
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'),
+]
