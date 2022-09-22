@@ -1,3 +1,5 @@
+from http import cookies
+from http.cookiejar import Cookie
 from django.shortcuts import render
 from wishlist.models import BarangWishlist
 from django.http import HttpResponse
@@ -8,6 +10,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+import datetime
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 # Create your views here.
 @login_required(login_url='/wishlist/login/')
@@ -16,9 +21,9 @@ def show_wishlist(request):
     #return render(request, "wishlist.html")
     data_barang_wishlist = BarangWishlist.objects.all()
     context = {
-    'list_barang': data_barang_wishlist,
-    'nama': 'Dina 🌈'
-    }
+        'list_barang': data_barang_wishlist,
+        'nama': 'Dina 🌸',
+        'last_login': request.COOKIES['last_login'],    }
     return render(request, "wishlist.html", context)
 
 def show_xml(request):
@@ -58,8 +63,10 @@ def login_user(request):
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
-            return redirect('wishlist:show_wishlist')
+            login(request, user) 
+            response = HttpResponseRedirect(reverse("wishlist:show_wishlist")) 
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
         else:
             messages.info(request, 'Username atau Password salah!')
     context = {}
@@ -67,5 +74,6 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('wishlist:login')
-
+    response = HttpResponseRedirect(reverse('wishlist:login'))
+    response.delete_cookie('last_login')
+    return response

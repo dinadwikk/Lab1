@@ -4,6 +4,8 @@ from wishlist.views import show_xml
 from wishlist.views import show_json
 from wishlist.views import show_json_by_id 
 from wishlist.views import show_xml_by_id 
+from wishlist.views import register
+from wishlist.views import login_user
 from wishlist.views import logout_user
 
 app_name = 'wishlist'
