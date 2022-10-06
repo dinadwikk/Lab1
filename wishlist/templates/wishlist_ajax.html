@@ -31,6 +31,57 @@
     {% endfor %}
 </table>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  function postNew(e) {
+    e.preventDefault()
+    const namaBarang = $("#nama_barang").val()
+    const hargaBarang = $("#harga_barang").val()
+    const deskripsi = $("#deskripsi").val()
+
+    const data = {
+      nama_barang: namaBarang,
+      harga_barang: hargaBarang,
+      deskripsi : deskripsi,
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: '{% url "wishlist:create_wishlist" %}',
+      data: data, 
+      success: () => {
+        alert("Done!")
+        fetchData()
+      },
+      dataType: 'json'
+    });
+  }
+
+  function writeTable(data) {
+    const table = $("#tabel")
+    table.empty()
+    for (let i = 0; i < data.length; i++) {
+      table.append(`
+        <tr>
+          <td>${data[i].fields.nama_barang}</td>
+          <td>${data[i].fields.harga_barang}</td>
+          <td>${data[i].fields.deskripsi}</td>
+        </tr>
+        `)
+    }
+  }
+
+  function fetchData() {
+    $.get("/wishlist/json", writeTable)
+  }
+
+  $(document).ready(() => {
+    $("#newBtn").click(postNew)
+    fetchData()
+  })
+</script>
+
 <p style="padding: 10px;">Sesi terakhir login: {{ last_login }}</p>
 
 {% endblock content %}
