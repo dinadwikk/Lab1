@@ -21,15 +21,36 @@
     <th style="padding: 10px;">Harga Barang</th>
     <th style="padding: 10px;">Deskripsi</th>
     </tr>
-    {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
-    {% for barang in list_barang %}
-    <tr>
-        <th style="padding: 10px;">{{barang.nama_barang}}</th>
-        <th style="padding: 10px;">{{barang.harga_barang}}</th>
-        <th style="padding: 10px;">{{barang.deskripsi}}</th>
-    </tr>
-    {% endfor %}
+    
 </table>
+<h2>Formulir barang baru</h2>
+  <form method="POST" action="">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <td>Nama Barang: </td>
+        <td><input type="text" id="nama_barang" name="nama_barang" placeholder="Nama Barang" class="form-control"></td>
+      </tr>
+
+      <tr>
+        <td>Harga Barang: </td>
+        <td><input type="number" id="harga_barang" name="harga_barang" placeholder="Harga Barang" class="form-control"></td>
+      </tr>
+
+      <tr>
+        <td>Deskripsi: </td>
+        <td><textarea class="form-control" id="deskripsi" name="deskripsi"></textarea></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td><input class="btn btn-primary" type="submit" value="Submit" id="newBtn"></td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
@@ -42,7 +63,7 @@
     const data = {
       nama_barang: namaBarang,
       harga_barang: hargaBarang,
-      deskripsi : deskripsi,
+      deskripsi,
       csrfmiddlewaretoken: "{{ csrf_token }}"
     }
 

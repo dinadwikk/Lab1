@@ -22,6 +22,7 @@ urlpatterns = [
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
     path('ajax/', show_ajax, name='show_ajax'),
-    path('ajax/submit', create_wishlist, name= 'create_wishlist'),
+    path('ajax/submit/', create_wishlist, name= 'create_wishlist'),
+
 
 ]
